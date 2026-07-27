@@ -4,6 +4,8 @@
 #include "clsUser.h"
 #include "clsInputValidate.h"
 #include "clsMainScreen.h"
+#include "clsLoginScreen.h"
+#include "Global.h"
 #include <iomanip>
 using namespace std;
 
@@ -11,9 +13,11 @@ using namespace std;
 int main()
 {
 
-
-	clsMainScreen::ShowMainMenue();
-	
+ 
+	while (true)
+	{
+		clsLoginScreen::ShowLoginScreen();
+	};
 
 	system("pause>0");
 	return 0;

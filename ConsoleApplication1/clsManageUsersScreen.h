@@ -5,6 +5,8 @@
 #include "clsListUsersScreen.h"
 #include "clsAddNewUserScreen.h"
 #include "clsDeleteUserScreen.h"
+#include "clsUpdateUserScreen.h"
+#include "clsFindUserScreen.h"
 #include <iomanip>
 
 using namespace std;
@@ -52,12 +54,12 @@ private:
 
     static void _ShowUpdateUserScreen()
     {
-        cout << "\nUpdate User Screen Will Be Here.\n";
+		clsUpdateUserScreen::ShowUpdateUserScreen();
     }
 
     static void _ShowFindUserScreen()
     {
-        cout << "\nFind User Screen Will Be Here.\n";
+		clsFindUserScreen::ShowFindUserScreen();
     }
 
 
@@ -123,6 +125,11 @@ public:
     static void ShowManageUsersMenue()
     {
 
+
+        if (!CheckAccessRights(clsUser::enPermissions::pManageUsers))
+        {
+            return;
+        }
         system("cls");
         _DrawScreenHeader("\t Manage Users Screen");
 
