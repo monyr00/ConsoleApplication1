@@ -31,7 +31,7 @@ protected:
         }
         else
         {
-            cout << "Hello" << endl;
+            
             return true;
         }
 
