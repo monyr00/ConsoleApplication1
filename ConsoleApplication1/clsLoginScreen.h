@@ -7,22 +7,33 @@
 #include "clsMainScreen.h"
 #include "Global.h"
 
-class clsLoginScreen :protected clsScreen
+class clsLoginScreen : protected clsScreen
 {
-
 private:
 
-    static  void _Login()
+    
+   
+
+  
+
+    static bool _Login()
     {
         bool LoginFaild = false;
+        short Attempts = 3;
 
         string Username, Password;
         do
         {
-
             if (LoginFaild)
             {
-                cout << "\nInvlaid Username/Password!\n\n";
+                cout << "\nInvalid Username/Password!\n";
+                cout << "You have " << --Attempts << " Trial(s) left.\n\n";
+            }
+
+            if (Attempts == 0)
+            {
+                cout << "\nYou are Locked after 3 faild trials.\n";
+                return false;
             }
 
             cout << "Enter Username? ";
@@ -37,22 +48,21 @@ private:
 
         } while (LoginFaild);
 
+		CurrentUser.RegisterLogIn();
+    
         clsMainScreen::ShowMainMenue();
-
+        return true; 
     }
 
 public:
 
-
-    static void ShowLoginScreen()
+    static bool ShowLoginScreen()
     {
         system("cls");
         _DrawScreenHeader("\t  Login Screen");
-        _Login();
 
+        return _Login();
     }
-
 };
-
 
 
