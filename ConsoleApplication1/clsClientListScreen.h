@@ -40,7 +40,7 @@ public:
         cout << setw(8) << left << "" << "\n\t_______________________________________________________";
         cout << "_________________________________________\n" << endl;
 
-        cout << setw(8) << left << "" << "| " << left << setw(15) << "Accout Number";
+        cout << setw(8) << left << "" << "| " << left << setw(15) << "Account Number";
         cout << "| " << left << setw(20) << "Client Name";
         cout << "| " << left << setw(12) << "Phone";
         cout << "| " << left << setw(20) << "Email";

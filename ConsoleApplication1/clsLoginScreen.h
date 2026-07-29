@@ -11,11 +11,6 @@ class clsLoginScreen : protected clsScreen
 {
 private:
 
-    
-   
-
-  
-
     static bool _Login()
     {
         bool LoginFaild = false;

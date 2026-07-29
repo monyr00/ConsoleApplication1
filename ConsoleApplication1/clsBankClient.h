@@ -8,7 +8,6 @@
 #include <fstream>
 
 using namespace std;
-
 class clsBankClient : public clsPerson
 {
 private:
@@ -16,13 +15,12 @@ private:
     enum enMode { EmptyMode = 0, UpdateMode = 1, AddNewMode = 2 };
     enMode _Mode;
 
-
     string _AccountNumber;
     string _PinCode;
     float _AccountBalance;
     bool _MarkedForDelete = false;
 
-    static clsBankClient _ConvertLineToClientObject(string Line, string Seperator = "#//#")
+    static clsBankClient _ConvertLinetoClientObject(string Line, string Seperator = "#//#")
     {
         vector<string> vClientData;
         vClientData = clsString::Split(Line, Seperator);
@@ -32,7 +30,7 @@ private:
 
     }
 
-    static string _ConvertClientObjectToLine(clsBankClient Client, string Seperator = "#//#")
+    static string _ConverClientObjectToLine(clsBankClient Client, string Seperator = "#//#")
     {
 
         string stClientRecord = "";
@@ -46,11 +44,6 @@ private:
 
         return stClientRecord;
 
-    }
-
-    static clsBankClient _GetEmptyClientObject()
-    {
-        return clsBankClient(enMode::EmptyMode, "", "", "", "", "", "", 0);
     }
 
     static  vector <clsBankClient> _LoadClientsDataFromFile()
@@ -70,7 +63,7 @@ private:
             while (getline(MyFile, Line))
             {
 
-                clsBankClient Client = _ConvertLineToClientObject(Line);
+                clsBankClient Client = _ConvertLinetoClientObject(Line);
 
                 vClients.push_back(Client);
             }
@@ -83,7 +76,7 @@ private:
 
     }
 
-    static void _SaveClientsDataToFile(vector <clsBankClient> vClients)
+    static void _SaveCleintsDataToFile(vector <clsBankClient> vClients)
     {
 
         fstream MyFile;
@@ -96,10 +89,12 @@ private:
 
             for (clsBankClient C : vClients)
             {
-                if (C.MarkedForDelete() == false)
+                if (C.MarkedForDeleted() == false)
                 {
-                    DataLine = _ConvertClientObjectToLine(C);
+                    //we only write records that are not marked for delete.  
+                    DataLine = _ConverClientObjectToLine(C);
                     MyFile << DataLine << endl;
+
                 }
 
             }
@@ -125,12 +120,14 @@ private:
 
         }
 
-        _SaveClientsDataToFile(_vClients);
+        _SaveCleintsDataToFile(_vClients);
 
     }
 
-    void _AddNew() {
-        _AddDataLineToFile(_ConvertClientObjectToLine(*this));
+    void _AddNew()
+    {
+
+        _AddDataLineToFile(_ConverClientObjectToLine(*this));
     }
 
     void _AddDataLineToFile(string  stDataLine)
@@ -148,12 +145,13 @@ private:
 
     }
 
-    bool MarkedForDelete()
+    static clsBankClient _GetEmptyClientObject()
     {
-        return _MarkedForDelete;
+        return clsBankClient(enMode::EmptyMode, "", "", "", "", "", "", 0);
     }
 
 public:
+
 
     clsBankClient(enMode Mode, string FirstName, string LastName,
         string Email, string Phone, string AccountNumber, string PinCode,
@@ -173,6 +171,10 @@ public:
         return (_Mode == enMode::EmptyMode);
     }
 
+    bool MarkedForDeleted()
+    {
+        return _MarkedForDelete;
+    }
 
     string AccountNumber()
     {
@@ -201,6 +203,7 @@ public:
     }
     __declspec(property(get = GetAccountBalance, put = SetAccountBalance)) float AccountBalance;
 
+
     static clsBankClient Find(string AccountNumber)
     {
 
@@ -213,7 +216,7 @@ public:
             string Line;
             while (getline(MyFile, Line))
             {
-                clsBankClient Client = _ConvertLineToClientObject(Line);
+                clsBankClient Client = _ConvertLinetoClientObject(Line);
                 if (Client.AccountNumber() == AccountNumber)
                 {
                     MyFile.close();
@@ -242,7 +245,7 @@ public:
             string Line;
             while (getline(MyFile, Line))
             {
-                clsBankClient Client = _ConvertLineToClientObject(Line);
+                clsBankClient Client = _ConvertLinetoClientObject(Line);
                 if (Client.AccountNumber() == AccountNumber && Client.PinCode == PinCode)
                 {
                     MyFile.close();
@@ -257,29 +260,37 @@ public:
         return _GetEmptyClientObject();
     }
 
-    enum enSaveResults
+    enum enSaveResults { svFaildEmptyObject = 0, svSucceeded = 1, svFaildAccountNumberExists = 2 };
+    enSaveResults Save()
     {
-        svFaildEmptyObject = 0,
-        svSucceeded = 1,
-        svFaildAccountNumberExists = 2,
-    };
 
-    enSaveResults Save() {
         switch (_Mode)
         {
-        case clsBankClient::EmptyMode:
+        case enMode::EmptyMode:
         {
-            return svFaildEmptyObject;
+            if (IsEmpty())
+            {
+
+                return enSaveResults::svFaildEmptyObject;
+
+            }
+
         }
 
-        case clsBankClient::UpdateMode:
+        case enMode::UpdateMode:
         {
+
+
             _Update();
-            return svFaildEmptyObject;
+
+            return enSaveResults::svSucceeded;
+
+            break;
         }
 
-        case clsBankClient::AddNewMode:
+        case enMode::AddNewMode:
         {
+            //This will add new record to file or database
             if (clsBankClient::IsClientExist(_AccountNumber))
             {
                 return enSaveResults::svFaildAccountNumberExists;
@@ -287,13 +298,18 @@ public:
             else
             {
                 _AddNew();
+
                 //We need to set the mode to update after add new
                 _Mode = enMode::UpdateMode;
                 return enSaveResults::svSucceeded;
             }
+
+            break;
+        }
         }
 
-        }
+
+
     }
 
     static bool IsClientExist(string AccountNumber)
@@ -303,9 +319,11 @@ public:
         return (!Client1.IsEmpty());
     }
 
-    bool Delete() {
-        vector <clsBankClient>_vClients;
+    bool Delete()
+    {
+        vector <clsBankClient> _vClients;
         _vClients = _LoadClientsDataFromFile();
+
         for (clsBankClient& C : _vClients)
         {
             if (C.AccountNumber() == _AccountNumber)
@@ -313,9 +331,10 @@ public:
                 C._MarkedForDelete = true;
                 break;
             }
+
         }
 
-        _SaveClientsDataToFile(_vClients);
+        _SaveCleintsDataToFile(_vClients);
 
         *this = _GetEmptyClientObject();
 
@@ -333,6 +352,28 @@ public:
         return _LoadClientsDataFromFile();
     }
 
+
+    void Deposit(double Amount)
+    {
+        _AccountBalance += Amount;
+        Save();
+    }
+
+
+    bool Withdraw(double Amount)
+    {
+        if (Amount > _AccountBalance)
+        {
+            return false;
+        }
+        else
+        {
+            _AccountBalance -= Amount;
+            Save();
+        }
+
+    }
+
     static double GetTotalBalances()
     {
         vector <clsBankClient> vClients = clsBankClient::GetClientsList();
@@ -346,25 +387,19 @@ public:
         }
 
         return TotalBalances;
-
     }
 
-    void Deposit(double Amount)
+    bool Transfer(float Amount, clsBankClient& DestinationClient)
     {
-        _AccountBalance += Amount;
-		Save();
-    }
-    bool Withdraw(double Amount)
-    {
-        if (Amount > _AccountBalance)
+        if (Amount > AccountBalance)
         {
             return false;
         }
-        else
-        {
-        _AccountBalance -= Amount;
-		Save();
-        }
-    }
 
+        Withdraw(Amount);
+        DestinationClient.Deposit(Amount);
+        return true;
+    }
 };
+
+
