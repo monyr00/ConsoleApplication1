@@ -1082,7 +1082,7 @@ public:
 		return CalculateBusinessDays(DateFrom, DateTo);
 
 	}
-	//above method is eough , no need to have method for the object
+	//above method is enough , no need to have method for the object
 
 	static clsDate CalculateVacationReturnDate(clsDate DateFrom, short VacationDays)
 	{

@@ -29,7 +29,6 @@ public:
 
     }
 
-
     bool IsOverLapWith(clsPeriod Period2)
     {
         return IsOverlapPeriods(*this, Period2);
