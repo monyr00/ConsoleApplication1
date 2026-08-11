@@ -58,7 +58,7 @@ private:
 	return vCurrencies;
 	}
 
-	static vector <clsCurrency> _SaveCurrencyDataToFile(vector <clsCurrency> vCurrencies)
+	static void _SaveCurrencyDataToFile(vector <clsCurrency> vCurrencies)
 	{
 		fstream MyFile;
 		MyFile.open("Currencies.txt", ios::out);//overwrite
@@ -73,6 +73,7 @@ private:
 
 			MyFile.close();
 		}
+		
 	}
 
 	void _Update()

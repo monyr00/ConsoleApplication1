@@ -5,14 +5,18 @@
 #include "clsInputValidate.h"
 #include "clsMainScreen.h"
 #include "clsLoginScreen.h"
+#include "clsCurrency.h"
 #include "Global.h"
 #include <iomanip>
 using namespace std;
 
 
+
+
+
 int main()
 {
-
+	
  
 	while (true)
 	{
