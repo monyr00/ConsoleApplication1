@@ -140,6 +140,7 @@
     <ClInclude Include="clsDeveloper.h" />
     <ClInclude Include="clsEmployee.h" />
     <ClInclude Include="clsFindClientScreen.h" />
+    <ClInclude Include="clsFindCurrencyScreen.h" />
     <ClInclude Include="clsFindUserScreen.h" />
     <ClInclude Include="clsInputValidate.h" />
     <ClInclude Include="clsListUsersScreen.h" />

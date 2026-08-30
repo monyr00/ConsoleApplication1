@@ -4,6 +4,7 @@
 #include <iomanip>
 #include "clsInputValidate.h"
 #include "clsCurrenciesListScreen.h"
+#include "clsFindCurrencyScreen.h"
 
 
 using namespace std;
@@ -38,7 +39,7 @@ private:
 	}
     static void _ShowFindCurrencyScreen()
     {
-        // Implement the logic to find a currency
+        clsFindCurrencyScreen::ShowFindCurrencyScreen();
     }
     static void _ShowUpdateRateScreen()
     {

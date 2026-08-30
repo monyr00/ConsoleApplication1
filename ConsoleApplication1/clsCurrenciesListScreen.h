@@ -9,7 +9,7 @@ class clsCurrenciesListScreen :protected clsScreen
 {
 
 private:
-    static void PrintCurrencyRecordLine(clsCurrency Currency)
+    static void _PrintCurrencyRecordLine(clsCurrency Currency)
     {
 
         cout << setw(8) << left << "" << "| " << setw(30) << left << Currency.Country();
@@ -48,7 +48,7 @@ public:
             for (clsCurrency Currency : vCurrencys)
             {
 
-                PrintCurrencyRecordLine(Currency);
+                _PrintCurrencyRecordLine(Currency);
                 cout << endl;
             }
 
