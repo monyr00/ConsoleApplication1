@@ -6,6 +6,7 @@
 #include "clsCurrenciesListScreen.h"
 #include "clsFindCurrencyScreen.h"
 #include "clsUpdateCurrencyRateScreen.h"
+#include "clsCurrencyCalculatorScreen.h"
 
 
 using namespace std;
@@ -25,7 +26,7 @@ private:
     static short _ReadCurrencyExchangeMainMenuOption()
     {
         cout << setw(37) << left << "" << "Choose what do you want to do? [1 to 5]? ";
-        short Choice = clsInputValidate::ReadShortNumberBetween(1, 5, "Enter Number between 1 to 5? ");
+        short Choice = clsInputValidate::ReadTNumberBetween<short>(1, 5, "Enter Number between 1 to 5? ");
         return Choice;
     }
     static void _GoBackToCurrencyExchangeMainMenue()
@@ -48,7 +49,7 @@ private:
 	}
     static void _ShowCurrencyCalculatorScreen()
     {
-        // Implement the logic for currency calculator
+        clsCurrencyCalculatorScreen::ShowCurrencyCalculatorScreen();
     }
 
     static void _PerformCurrencyExchangeMainMenuOption(enCurrencyExchangeOptions enCurrencyExchangeOptions)
